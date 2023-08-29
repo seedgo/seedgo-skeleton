@@ -1,7 +1,9 @@
 #!/bin/sh
 
 version="$(date +%Y%m%d%H%M)"
-docker build -t registry.cn-hangzhou.aliyuncs.com/haydenzhou/mdtube-api:${version} .
-docker push registry.cn-hangzhou.aliyuncs.com/haydenzhou/mdtube-api:${version}
+
+# you should replace the {registry} with your container registry repository
+docker build -t {registry}:${version} .
+docker push {registry}:${version}
 
 
