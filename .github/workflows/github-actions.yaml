@@ -1,0 +1,20 @@
+name: seedgo-skeleton
+run-name: auto build and test seedgo-skeleton
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "build docker image"
+      - run: docker build -t seedgo-skeleton:latest .
+      - run: echo "run and test health api"
+      - run: docker run -d -p 10016:10016 -v $GITHUB_WORKSPACE/config/application.yaml:/app/config/application.yaml seedgo-skeleton:latest
+      - run: curl localhost:10016/health
+
