@@ -37,13 +37,13 @@ func ParseDatabaseConfig() {
 	for dsName, _ := range datasources {
 		dialect, err := parseDatasource(dsName)
 		if err != nil {
-			Logger.Errorf("datasource: %s parse err: %s", dsName, err)
+			Logger.Errorf("datasource: [%s] parse err: %s", dsName, err.Error())
 			continue
 		}
 
 		db, err := gorm.Open(dialect, &gorm.Config{})
 		if err != nil {
-			Logger.Errorf("database: %s open err: %s", err)
+			Logger.Errorf("database: [%s] open err: %s", dsName, err.Error())
 			continue
 		}
 
@@ -66,13 +66,13 @@ func parseDatasource(dsName string) (gorm.Dialector, error) {
 func parseMysql(dsName string) gorm.Dialector {
 	confKey := "datasource." + dsName
 	conf := viper.Sub(confKey)
-	host := conf.GetString("datasource.host")
-	port := conf.GetString("datasource.port")
-	database := conf.GetString("datasource.database")
-	username := conf.GetString("datasource.username")
-	password := conf.GetString("datasource.password")
-	charset := conf.GetString("datasource.charset")
-	loc := conf.GetString("datasource.loc")
+	host := conf.GetString("host")
+	port := conf.GetString("port")
+	database := conf.GetString("database")
+	username := conf.GetString("username")
+	password := conf.GetString("password")
+	charset := conf.GetString("charset")
+	loc := conf.GetString("loc")
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true&loc=%s",
 		username,
 		password,
