@@ -2,11 +2,12 @@ package common
 
 import (
 	"fmt"
+	"net/url"
+
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"net/url"
 )
 
 var DBMap = make(map[string]*gorm.DB)
@@ -34,7 +35,7 @@ func ParseDatabaseConfig() {
 		return
 	}
 
-	for dsName, _ := range datasources {
+	for dsName := range datasources {
 		dialect, err := parseDatasource(dsName)
 		if err != nil {
 			Logger.Errorf("datasource: [%s] parse err: %s", dsName, err.Error())
@@ -45,6 +46,10 @@ func ParseDatabaseConfig() {
 		if err != nil {
 			Logger.Errorf("database: [%s] open err: %s", dsName, err.Error())
 			continue
+		}
+
+		if ServerConfig.Debug {
+			db = db.Debug()
 		}
 
 		DBMap[dsName] = db
