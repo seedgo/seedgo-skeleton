@@ -13,7 +13,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: echo "build docker image"
-      - run: docker build -t seedgo-skeleton:latest .
+      - run: docker build --build-arg="GOPROXY=direct" --build-arg="ALPINE_PKG_SRC=dl-cdn.alpinelinux.org" -t seedgo-skeleton:latest .
       - run: echo "run and test health api"
       - run: docker run -d -p 10016:10016 -v $GITHUB_WORKSPACE/config/application.yaml:/app/config/application.yaml seedgo-skeleton:latest
       - run: curl localhost:10016/health
