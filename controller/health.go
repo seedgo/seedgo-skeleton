@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"seedgo-skeleton/response"
+	"github.com/seedgo/seedgo"
 )
 
 func Health(ctx *gin.Context) {
-	response.Success(ctx, "ok")
+	seedgo.Success(ctx, "ok")
 }
