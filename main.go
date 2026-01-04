@@ -1,24 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"seedgo-skeleton/common"
-	"seedgo-skeleton/config"
-	"strconv"
+	"seedgo-skeleton/controller"
+
+	"github.com/seedgo/seedgo"
 )
 
 func main() {
-	config.InitCmd()
-	config.Init()
+	server := seedgo.NewServer()
 
-	if !common.ServerConfig.Debug {
-		gin.SetMode(gin.ReleaseMode)
+	controller.RegisterRoutes(server.GetEngine())
+
+	err := server.Start()
+	if err != nil {
+		panic(err)
 	}
-	r := gin.New()
-	RegisterRoutes(r)
-
-	port := strconv.Itoa(common.ServerConfig.Port)
-	fmt.Printf("start server at port: %s\n", port)
-	panic(r.Run(":" + port))
 }
